@@ -25,3 +25,38 @@ def parse_record(line: str) -> dict:
         "date": date,
     }
 
+
+def read_valid(lines: list[str]) -> list[dict]:
+    records = []
+
+    for line in lines:
+        if not line.strip():
+            continue
+
+        try:
+            record = parse_record(line)
+        except ValueError:
+            continue
+
+        records.append(record)
+
+    return records
+
+
+def average_by_city(records: list[dict]) -> dict:
+    totals = {}
+    counts = {}
+
+    for record in records:
+        city = record["city"]
+        temperature = record["temperature"]
+
+        totals[city] = totals.get(city, 0) + temperature
+        counts[city] = counts.get(city, 0) + 1
+
+    averages = {}
+
+    for city in totals:
+        averages[city] = round(totals[city] / counts[city], 1)
+
+    return averages
