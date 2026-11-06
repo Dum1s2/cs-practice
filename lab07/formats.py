@@ -58,9 +58,7 @@ def parse_settings(lines: list[str]) -> dict:
             value = False
         else:
             try:
-                if "," in value:
-                    value = float(value.replace(",", "."))
-                elif "." in value:
+                if "." in value:
                     value = float(value)
                 else:
                     value = int(value)
