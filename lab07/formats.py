@@ -58,12 +58,12 @@ def parse_settings(lines: list[str]) -> dict:
             value = False
         else:
             try:
-                if "." in value:
-                    value = float(value)
-                else:
-                    value = int(value)
+                value = int(value)
             except ValueError:
-                pass
+                try:
+                    value = float(value)
+                except ValueError:
+                    pass
 
         result[key] = value
 
@@ -98,3 +98,14 @@ def records_to_json(records: list[dict]) -> str:
         indent=2,
         sort_keys=True
     )
+tests = [
+    "rate: 3,5 # с запятой",
+    "rate: 3.5",
+    "rate: 12",
+    "active: true",
+    "active: no",
+    "title: Отчёт за март"
+]
+
+for test in tests:
+    print(parse_settings([test]))
