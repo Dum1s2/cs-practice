@@ -1,4 +1,3 @@
-
 import json
 
 def csv_to_records(text: str) -> list[dict]:
@@ -34,7 +33,7 @@ def parse_settings(lines: list[str]) -> dict:
             continue
         
         if ":" not in line:
-                    continue
+            continue
         
         key, value = line.split(":", 1)
         key = key.strip()
@@ -44,30 +43,28 @@ def parse_settings(lines: list[str]) -> dict:
             result[key] = []
             current_list = key
             continue
+        
 
-        if line.startswith("- "):
+        if line.startswith("-"):
             if current_list is not None:
-                value = line[2:].strip()
+                value = line[1:].strip()
                 result[current_list].append(value)
             continue
 
         current_list = None
 
-        if value.isdigit() or (
-            value.startswith("-") and value[1:].isdigit()
-        ):
-            value = int(value)
-
-        elif value.lower() in ("true", "yes"):
+        if value.lower() in ("true", "yes"):
             value = True
-
         elif value.lower() in ("false", "no"):
             value = False
-
         else:
             try:
-                if "." in value:
+                if "," in value:
+                    value = float(value.replace(",", "."))
+                elif "." in value:
                     value = float(value)
+                else:
+                    value = int(value)
             except ValueError:
                 pass
 
