@@ -32,6 +32,12 @@ def parse_settings(lines: list[str]) -> dict:
         if not line:
             continue
         
+        if line.startswith("-"):
+            if current_list is not None:
+                value = line[1:].strip()
+                result[current_list].append(value)
+            continue
+        
         if ":" not in line:
             continue
         
@@ -42,13 +48,6 @@ def parse_settings(lines: list[str]) -> dict:
         if not value:
             result[key] = []
             current_list = key
-            continue
-        
-
-        if line.startswith("-"):
-            if current_list is not None:
-                value = line[1:].strip()
-                result[current_list].append(value)
             continue
 
         current_list = None
@@ -101,26 +100,3 @@ def records_to_json(records: list[dict]) -> str:
         indent=2,
         sort_keys=True
     )
-print(csv_to_records(
-    "id,город\n1,Азов\n2,Шахты\n"
-))
-
-print(parse_settings([
-    "# отчёт",
-    "title: Отчёт за март",
-    "decimals: 1",
-    "active: true",
-    "columns:",
-    "  - город",
-    "  - цена"
-]))
-
-print(merge_by_key(
-    [{"id": "1", "город": "Азов"}],
-    {"1": {"регион": "Ростовская"}},
-    "id"
-))
-
-print(records_to_json([
-    {"б": 2, "а": 1}
-]))
