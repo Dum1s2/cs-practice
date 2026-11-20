@@ -17,3 +17,22 @@ def vector_report(values: list[float]) -> dict:
     
     return vector
 
+def change_vector(values: list[float]) -> list[float]:
+    arr = np.asarray(values, dtype=float).copy()
+    arr[2:5] = 99
+    arr[::2] = -1
+    
+    return arr.tolist()
+
+def cap_above(values: list[float], limit: float) -> list[float]:
+    arr = np.asarray(values, dtype=float).copy()
+    mask = arr > limit
+    arr[mask] = limit
+
+    return arr.tolist()
+
+def celsius_to_fahrenheit(values: list[float]) -> list[float]:
+    arr = np.asarray(values, dtype=float)
+    fahrenheit = arr * 9 / 5 + 32
+    
+    return fahrenheit.tolist()
